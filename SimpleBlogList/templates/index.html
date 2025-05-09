@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Blog</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="max-w-4xl mx-auto p-8">
+        <h1 class="text-4xl font-bold text-center text-blue-700 mb-6">Blog Posts</h1>
+
+        <!-- Link to Add Post Form -->
+        <div class="text-center mb-8">
+            <a href="{{ url_for('add_post') }}" class="text-blue-500 font-medium text-lg underline">Add a New Post</a>
+        </div>
+
+        <!-- Loop through all blog posts and display them -->
+        {% for post in posts.items %}
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6 hover:shadow-xl transition-shadow duration-200">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ post.title }}</h2>
+                <p class="text-gray-600">{{ post.content }}</p>
+                <div class="mt-4 flex justify-between">
+                    <!-- Edit button (link) -->
+                    <a href="{{ url_for('edit_post', id=post.id) }}" class="bg-pink-500 text-white px-4 py-2 rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-gray-500">Edit</a>
+                    <!-- Delete button (link) -->
+                    <a href="{{ url_for('delete_post', id=post.id) }}" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-gray-500">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- Pagination Controls -->
+        <div class="flex justify-center mt-6">
+            <div class="inline-flex rounded-md shadow-sm">
+                {% if posts.has_prev %}
+                    <a href="{{ url_for('home', page=posts.prev_num) }}" class="px-4 py-2 text-sm font-medium text-blue-700 border border-gray-300 rounded-l-lg hover:bg-gray-100">Previous</a>
+                {% endif %}
+                {% if posts.has_next %}
+                    <a href="{{ url_for('home', page=posts.next_num) }}" class="px-4 py-2 text-sm font-medium text-blue-700 border-t border-b border-gray-300 rounded-r-lg hover:bg-gray-100">Next</a>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
